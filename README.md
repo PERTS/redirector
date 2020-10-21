@@ -18,5 +18,18 @@ Visiting this app should redirect you to neptune.perts.net/participate/portal. A
 | perts.me/XYY     | neptune.perts.net/participate/portal/XYY     |
 | perts.me/XYY?foo | neptune.perts.net/participate/portal/XYY?foo |
 
+## Deployment
+
+To deploy to production:
+
+```
+gcloud app deploy app.yaml --project=perts-me --version=production --no-promote
+```
+
+To deploy to another version for testing:
+
+```
+gcloud app deploy app.yaml --project=perts-me --version=acceptance --no-promote
+```
 
 [1]: https://docs.google.com/document/d/184dsSF-esWgJ-TS_da3--UkFNb1oIur-r99X-7Xmhfg/edit
