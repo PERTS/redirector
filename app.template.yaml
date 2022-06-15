@@ -1,3 +1,5 @@
+# ^^^The deploy script should insert environment variables above this line^^^
+
 runtime: python27
 api_version: 1
 threadsafe: true
