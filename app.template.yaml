@@ -1,21 +1,15 @@
 # ^^^The deploy script should insert environment variables above this line^^^
 
-runtime: python27
-api_version: 1
-threadsafe: true
+runtime: python311
+entrypoint: gunicorn -b :$PORT main:app
 
 handlers:
+    - url: /static
+      static_dir: static
+      secure: always
+      # Allow cross-domain requests for these resources.
+      http_headers:
+          Access-Control-Allow-Origin: '*'
 
-- url: /static
-  static_dir: static
-  secure: always
-  # Allow cross-domain requests for these resources.
-  http_headers:
-    Access-Control-Allow-Origin: '*'
-
-- url: /.*
-  script: main.application
-
-skip_files:
-  - \.gitignore
-  - ^\.git/.*
+    - url: /.*
+      script: auto

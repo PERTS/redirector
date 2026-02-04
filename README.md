@@ -1,15 +1,18 @@
 # perts.me redirector
 
-Very simple app to do flexible redirections from perts.me to neptune.perts.net/participate/portal.
+Very simple app to do flexible redirections from perts.me to copilot.perts.net/portal.
 
-* Allows https redirects
-* Applies path and query string to the new domain
+- Allows https redirects
+- Applies path and query string to the new domain
+
+⚠️ IMPORTANT ⚠️ - This app, hosted at perts.me, is the entrypoint for all PERTS survey participants. Deployments to project `perts-me` with version `production` should only be done with the utmost caution.
 
 ## Setup
 
 1. Install `gcloud` and the python tools like all our other app engine projects. See [Tools for Web Development][1] for environment setup steps.
-2. `npm start` (or use alias `npm run server`)
-3. Visit localhost:8001 in your browser
+2. `npm run build $MY_REDIRECT`
+3. `npm start`
+4. Visit localhost:8080 in your browser
 
 ## Behavior
 
@@ -23,20 +26,20 @@ Note: the location of the 301 response will always use `https://`.
 
 ### Applying path and query string to redirect
 
-We use this app at perts.me to redirect to neptune.perts.net/participate/portal. Any path or query string should be appended. For example:
+We use this app at perts.me to redirect to copilot.perts.net/portal. Any path or query string should be appended. For example:
 
-|       URL        |                 301 redirect                 |
-|------------------|----------------------------------------------|
-| perts.me         | neptune.perts.net/participate/portal/        |
-| perts.me/XYY     | neptune.perts.net/participate/portal/XYY     |
-| perts.me/XYY?foo | neptune.perts.net/participate/portal/XYY?foo |
+| URL              | 301 redirect                     |
+| ---------------- | -------------------------------- |
+| perts.me         | copilot.perts.net/portal/        |
+| perts.me/XYY     | copilot.perts.net/portal/XYY     |
+| perts.me/XYY?foo | copilot.perts.net/portal/XYY?foo |
 
 ## Development
 
-Build an app.yaml file with a redirection domain and/or path.
+Build an .env file with a redirection domain and/or path.
 
 ```
-./build_app_yaml.sh neptune.perts.net/participate/portal
+npm run build copilot.perts.net/portal
 ```
 
 Then start the app.
@@ -51,29 +54,25 @@ It should respond with a 301:
 $> curl -I http://localhost:8001/foo
 HTTP/1.1 301 Moved Permanently
 content-length: 0
-location: https://neptune.perts.net/participate/portal/foo
+location: https://copilot.perts.net/portal/foo
 cache-control: no-cache
 content-type: text/html; charset=utf-8
 Server: Development/2.0
 Date: Mon, 16 May 2022 20:51:41 GMT
 ```
 
+Note that the local server looks at `.env` for the redirect, because it's simpler to parse than a YAML file. However, the deployed code only sees the `app.yaml` file.
+
 ## Deployment
 
-To deploy, run the deploy script and specify the project ID and where to redirect. Assumes the App Engine version is "production".
+To deploy, run the deploy script and specify the app engine version and where to redirect. You can use the "acceptance" version for testing deployments:
 
 ```
-npm run deploy perts-me neptune.perts.net/participate/portal
+./deploy.sh acceptance copilot.perts.net/portal
 ```
 
-To deploy to another version for testing:
+Use the "production" version to change the behavior of perts.me (with caution!)
 
-1. Make sure to generate the correct app.yaml file with the intended redirect.
-2. Use a custom gcloud command. Don't forget `--no-promote`!
-
-```
-./build_app_yaml.sh custom-domain.org
-gcloud app deploy app.yaml --project=perts-me --version=acceptance --no-promote
-```
+The build script will ask you to confirm, and gcloud CLI will confirm the deployment a second time. Double check the project and version before continuing.
 
 [1]: https://docs.google.com/document/d/184dsSF-esWgJ-TS_da3--UkFNb1oIur-r99X-7Xmhfg/edit

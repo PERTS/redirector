@@ -1,15 +1,21 @@
 #!/bin/sh
 
-if [ -z $1 ] || [ -z $2 ]; then
-  echo "Provide a project ID and redirection domain/path, like 'npm run deploy perts-me neptune.perts.net/participate/portal'."
+PROJECT_ID="perts-me"
+VERSION="$1"
+REDIRECT_TO="$2"
+
+if [ -z "$VERSION" ] || [ -z "$REDIRECT_TO" ]; then
+  echo "Usage: ./deploy.sh VERSION REDIRECT_TO"
+  echo "Example: ./deploy.sh acceptance copilot.perts.net/portal"
+  echo "Example: ./deploy.sh production neptune.perts.net/participate/portal"
   exit 0
 fi
 
-read -p "Deploy redirector to project '$1' and have it redirect to 'https://$2'? [y/N]: " CONFIRM_DEPLOY
+read -p "Deploy redirector to project '$PROJECT_ID' and have it redirect to 'https://$REDIRECT_TO' (version: $VERSION)? [y/N]: " CONFIRM_DEPLOY
 
 if [ "$CONFIRM_DEPLOY" = 'y' ]; then
-  ./build_app_yaml.sh $2
-  gcloud app deploy app.yaml --project=$1 --version=production --no-promote
+  ./build_app_yaml.sh $REDIRECT_TO
+  gcloud app deploy app.yaml --project=$PROJECT_ID --version=$VERSION --no-promote
 else
   exit 0
 fi

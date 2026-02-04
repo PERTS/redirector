@@ -1,6 +1,4 @@
-*.sublime-project
-*.sublime-workspace
-
+app.yaml
+.env
 *.pyc
-
-.gae_sdk
+*.code-workspace

@@ -3,7 +3,7 @@
   "description": "PERTS participation portal redirector",
   "version": "0.0.1",
   "engines": {
-    "node": "16"
+    "node": "20.19.5"
   },
   "license": "UNLICENSED",
   "repository": {
@@ -11,9 +11,9 @@
     "url": "git://github.com/PERTS/perts_me.git"
   },
   "scripts": {
-    "deploy": "./deploy.sh",
-    "server": "dev_appserver.py . -A=perts-me --port=8001 --admin_port=8002 --storage_path=.gae_sdk --enable_console=yes --enable_host_checking=no --support_datastore_emulator=true",
-    "start": "if [ ! -f \"app.yaml\" ]; then echo \"Can't start app: app.yaml is missing. Run build_app_yaml.sh first\"; else npm run server; fi"
+    "build": "./build_app_yaml.sh",
+    "server": "export $(cat .env | xargs) && gunicorn -b :8080 main:app",
+    "start": "if [ ! -f \".env\" ]; then echo \"Can't start app: .env is missing. Run build_app_yaml.sh first\"; else npm run server; fi"
   },
   "dependencies": {}
 }
