@@ -9,10 +9,17 @@ Very simple app to do flexible redirections from perts.me to copilot.perts.net/p
 
 ## Setup
 
-1. Install `gcloud` and the python tools like all our other app engine projects. See [Tools for Web Development][1] for environment setup steps.
-2. `npm run build $MY_REDIRECT`
-3. `npm start`
-4. Visit localhost:8080 in your browser
+- Install `gcloud` and the python tools like all our other app engine projects. See [Tools for Web Development][1] for environment setup steps.
+- Install python dependencies:
+
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate
+
+    pip install -r requirements.txt
+    ```
+
+Note: To deactivate the virtual environment when you're done, run `deactivate`.
 
 ## Behavior
 

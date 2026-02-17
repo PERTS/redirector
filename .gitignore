@@ -1,4 +1,11 @@
-app.yaml
 .env
+
+# App Engine
+app.yaml
+
+# Python
 *.pyc
+venv/
+
+# VS Code
 *.code-workspace
