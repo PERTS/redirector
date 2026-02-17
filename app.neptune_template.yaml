@@ -1,0 +1,24 @@
+# ^^^The deploy script should insert environment variables above this line^^^
+
+runtime: python311
+entrypoint: gunicorn -b :$PORT main:app
+
+handlers:
+    # Supports legacy URLs for Neptune assets, currently in use by Qualtrics.
+    - url: /silk
+      static_dir: static
+      secure: always
+      # Allow cross-domain requests for these resources.
+      http_headers:
+          Access-Control-Allow-Origin: '*'
+
+    # Supports images in use by Qualtrics.
+    - url: /static
+      static_dir: static
+      secure: always
+      # Allow cross-domain requests for these resources.
+      http_headers:
+          Access-Control-Allow-Origin: '*'
+
+    - url: /.*
+      script: auto

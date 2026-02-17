@@ -1,11 +1,16 @@
 # perts.me redirector
 
-Very simple app to do flexible redirections from perts.me to copilot.perts.net/portal.
+Very simple app to do flexible redirections and serve static assets.
 
 - Allows https redirects
 - Applies path and query string to the new domain
 
-⚠️ IMPORTANT ⚠️ - This app, hosted at perts.me, is the entrypoint for all PERTS survey participants. Deployments to project `perts-me` with version `production` should only be done with the utmost caution.
+⚠️ IMPORTANT ⚠️ - This app, hosted at perts.me, is the entrypoint for all PERTS survey participants because it redirects to copilot.perts.net/portal. Deployments to project `perts-me` with version `production` should only be done with the utmost caution.
+
+It is also used at our domain neptune.perts.net, which serves to:
+
+- redirect users with legacy portal links to the correct portal
+- serve static assets for Qualtrics surveys CB and CG
 
 ## Setup
 
@@ -68,14 +73,16 @@ Server: Development/2.0
 Date: Mon, 16 May 2022 20:51:41 GMT
 ```
 
-Note that the local server looks at `.env` for the redirect, because it's simpler to parse than a YAML file. However, the deployed code only sees the `app.yaml` file.
+Note that the local server uses `gunicorn` and not an app engine emulator, so it is not aware of `app.yaml`. Any redirects or static asset handlers in `app.yaml` will not have an effect. Instead, it looks at `.env` for the redirect, because it's simpler to parse than a YAML file.
 
-## Deployment
+The deployed code only sees the `app.yaml` file.
+
+## Deployment to perts.me
 
 To deploy, run the deploy script and specify the app engine version and where to redirect. You can use the "acceptance" version for testing deployments:
 
 ```
-./deploy.sh acceptance copilot.perts.net/portal
+./deploy_perts_me.sh acceptance copilot.perts.net/portal
 ```
 
 Use the "production" version to change the behavior of perts.me (with caution!)
@@ -83,3 +90,17 @@ Use the "production" version to change the behavior of perts.me (with caution!)
 The build script will ask you to confirm, and gcloud CLI will confirm the deployment a second time. Double check the project and version before continuing.
 
 [1]: https://docs.google.com/document/d/184dsSF-esWgJ-TS_da3--UkFNb1oIur-r99X-7Xmhfg/edit
+
+## Deployment to neptune.perts.net
+
+To deploy, run the deploy script and specify the app engine version and where to redirect. You can use the "acceptance" version for testing deployments:
+
+```
+./deploy_neptune.sh acceptance copilot.perts.net/portal
+```
+
+Use the "production" version to change the behavior of perts.me (with caution!)
+
+Note that this specialize deploy script will also add entries to app.yaml for static assests used in Qualtrics surveys.
+
+The build script will ask you to confirm, and gcloud CLI will confirm the deployment a second time. Double check the project and version before continuing.
