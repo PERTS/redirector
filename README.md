@@ -85,7 +85,7 @@ To deploy, run the deploy script and specify the app engine version and where to
 ./deploy_perts_me.sh acceptance copilot.perts.net/portal
 ```
 
-Use the "production" version to change the behavior of perts.me (with caution!)
+Use the "production" version to change the behavior of perts.me (with caution!).
 
 The build script will ask you to confirm, and gcloud CLI will confirm the deployment a second time. Double check the project and version before continuing.
 
@@ -99,7 +99,7 @@ To deploy, run the deploy script and specify the app engine version and where to
 ./deploy_neptune.sh acceptance copilot.perts.net/portal
 ```
 
-Use the "production" version to change the behavior of perts.me (with caution!)
+Use the "redirector" version to change the behavior of neptune.perts.net (with caution!) which will affect Qualtrics surveys and legacy survey portal links.
 
 Note that this specialize deploy script will also add entries to app.yaml for static assests used in Qualtrics surveys.
 
